@@ -33,6 +33,20 @@ drivers.push({
 //show the updated list of drivers 
 console.log(drivers);
 
+try {
+    await client.connect();
+    const db= client.db("testDB");
+   
+    const driversCollection = db.collection("drivers");
+   
+    drivers.forEach(async (driver) => {
+       const result = await driversColletion.insertOne(drivers);
+       console.log('New driver created with result: ${result}')
+   });
+   } finally { 
+       await client.close();
+   }
+
 async function main() {
     // Replace <connection-string> with your MongoDB URI
     const uri = "mongodb://localhost:27017"
