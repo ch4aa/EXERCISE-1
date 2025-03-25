@@ -18,8 +18,17 @@ const drivers = [
 console. log(drivers);
 
 // TODO: show the all the drivers name in the console
-
+drivers.forEach(driver => {
+    console.log(driver.name); 
+    });
+    
 // TODO: add additional driver to the drivers array
+drivers.push({
+    name: "Bob Johnson",
+    vehicleType: "Truck",
+    isAvailable: true,
+    rating: 4.9
+});
 
 //show the updated list of drivers 
 console.log(drivers);
