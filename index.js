@@ -18,34 +18,12 @@ const drivers = [
 console. log(drivers);
 
 // TODO: show the all the drivers name in the console
-drivers.forEach(driver => {
-console.log(driver.name); 
-});
 
 // TODO: add additional driver to the drivers array
-drivers.push({
-    name: "Bob Johnson",
-    vehicleType: "Truck",
-    isAvailable: true,
-    rating: 4.9
-});
 
 //show the updated list of drivers 
 console.log(drivers);
 
-try {
-    await client.connect();
-    const db= client.db("testDB");
-   
-    const driversCollection = db.collection("drivers");
-   
-    drivers.forEach(async (driver) => {
-       const result = await driversColletion.insertOne(drivers);
-       console.log('New driver created with result: ${result}')
-   });
-   } finally { 
-       await client.close();
-   }
 
 async function main() {
     // Replace <connection-string> with your MongoDB URI
