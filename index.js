@@ -26,37 +26,19 @@ drivers.push({ name: "Bob Johnson", vehicleType: "Truck", isAvailable: true, rat
 
 async function main() {
     try {
-    await client. connect();
-    console. log("Connected to MongoDB!");
+        await client.connect();
+        const db = client.db("rideSharing");
+        const collection = db.collection("drivers");
 
-    const db = client.db("testDB");
-    const collection = db.collection ("users");
-
-    // Insert drivers 
-    await collection. insertMany(drivers); 
-    console. log ("Drivers inserted!");
-
-    // Query high-rated drivers 
-    const highRatedDrivers = await drivercollection. find({
-        rating: {$gte: 4.5}, available: true
-     }).toArray();
-    console. log("High Rated Available Drivers:", highRatedDrivers);
-  
-   //updates John Doe's rating 
-   await drivercollection.updateOne(
-    {name:" John Doe"},
-    {$inc: { rating: 3.1}}
-   );
-console.log("update John Doe's rating 3.1");
-
-//delete unavailable driver
-await driverCollection.deleteMany({available: false});
-console.log ("unavailable drivers deleted!");
-
-    } catch (err){
-        console.error(err);
-    } finally {
-     await client.close();
+    //insert drivers 
+        await collection.insertMany(drivers);
+        console.log("Drivers inserted successfully");
+      } finally {
+        await client.close();
+      }
     }
-}
+    
+    run().catch(console.dir);
+   
+
     main ();
