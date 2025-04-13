@@ -9,8 +9,6 @@ const drivers = [
     {name: "Alice Smith", vehicleType: "SUV",isAvailable: false, rating: 4.5}, 
     {name: "Haris J", vehicleType: "honda", isAvailable: true, rating: 4.7}
 ];
-// show the data in the console
-console. log(drivers);
 
 // TODO: show the all the drivers name in the console
 console.log("Driver Names:");
@@ -27,18 +25,36 @@ drivers.push({ name: "Bob Johnson", vehicleType: "Truck", isAvailable: true, rat
 async function main() {
     try {
         await client.connect();
-        const db = client.db("rideSharing");
-        const collection = db.collection("drivers");
+        const db = client.db("testDB");
+
+        const driverCollection = db.collection("drivers");
 
     //insert drivers 
         await collection.insertMany(drivers);
         console.log("Drivers inserted successfully");
-      } finally {
-        await client.close();
-      }
-    }
     
-    run().catch(console.dir);
-   
+    // Query high-rated drivers
+    const highRatedDrivers = await driverCollection.find({
+        rating :{ $gte: 4.5}, available : true
+    }).toarray();
+    console.log("High Rated Available Drivers:",highRatedDrivers);
 
-    main ();
+    //updated John Doe's rating
+    await driverCollection.updateOne(
+        {name : "John Doe"}, 
+        {$inc: {rating: 0.1}}
+    );
+    console.log("Updated John Doe's by 0.1"); 
+
+    //Delete 
+    await  driverCollection.deleteMany({ available : false});
+    console.log("Deleted unavailable drivers");
+
+}catch (err){
+ console.error(err);
+} finally {
+ await client.close();
+}
+}
+
+main();
